@@ -1,0 +1,148 @@
+<html>
+<head>
+<base href="http://localhost:3033" />
+
+  <link rel="stylesheet" href="./scraperCss.css"> 
+  <link rel="stylesheet" href="./scraperJs.css"> 
+
+</head>
+<body class="container">
+<!--
+<p>dfd</p>
+-->
+<h1>&nbsp;</h1>
+
+<div ng-app="myAppuploads" ng-controller="WsController">
+
+<!--
+First Name: <input type="text" ng-model="firstName"><br>
+Last Name: <input type="text" ng-model="lastName"><br>
+<br>
+Full Name: {>firstName + " " + lastName<}
+-->
+
+<pre>Selected date is: <em>{>dt | date:'fullDate' <}</em></pre>
+
+    <h4>Popup</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="{>format<}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>Format: <span class="muted-text">(manual alternate <em>{>altInputFormats[0]<}</em>)</span></label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
+      </div>
+    </div>
+
+    <hr />
+    <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+     
+    <button type="button" class="btn btn-sm btn-default" ng-click="setDate(2009, 7, 24)">2009-08-24</button>
+    <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
+    
+    <button ng-click="getEvents()" class="btn btn-sm btn-default">Get Events</button>
+    <button ng-click="getPredictions()" class="btn btn-sm btn-default">Get Predictions</button>
+
+    <hr/>
+
+<div class="row">
+      <div class="col-md-8">
+<table class="table">
+<tr>
+<th>time</th>
+<th>Event</th>
+<th>1x2(1)</th>
+<th>1x2(x)</th>
+<th>1x2(2)</th>
+<th></th>
+</tr>
+    <tr ng-repeat="x in eventsList" ng-init="splitWordsIn(x)" >
+    <td>{>x.eventTimeOdd<}</td> 
+    <td>
+   {>x.teamName<} <br/> P &nbsp;
+ <!--
+	    {>splittedWords[x['_id']] <}
+	-->
+    <span ng-repeat="qw in splittedWords0[x['_id']]">
+    	<span ng-click="searchPredictions(qw,'home',x)">{>qw<}</span>&nbsp;
+    </span> - 
+    <span ng-repeat="qw in splittedWords1[x['_id']]">
+    	<span ng-click="searchPredictions(qw,'away',x)">{>qw<}</span>&nbsp;
+    </span>
+
+    </td>
+    <td>{>x.HomeOdd<}</td>
+    <td>{>x.drawOdd<}</td>
+    <td>{>x.awayOdd<}</td>
+    <td>
+    {>x.saved_on<} <button ng-click="constantRotations(x)">ddd</button>
+    </td>
+    </tr>
+</table>
+
+</div>
+      <div class="col-md-4">
+
+      {>wholeTrain[selectedEventIndex] | json<}<br/>
+
+      {>bre.x | json<}<br/>
+
+      {"aTeam": /.*Morelia.*/}  = (away Query)<br/>
+
+      {"hTeam": /.*Morelia.*/}  = (away Query)<br/>
+
+
+<table class="table">
+<tr>
+<td>home</td>
+<td>draw</td>
+<td>away</td>
+</tr>
+<tr ng-repeat="ze in bre.smith">
+	{>ze<}<br/>
+	<td>{>ze.HomeOdd<}</td>
+	<td>{>ze.drawOdd<}</td>
+	<td>{>ze.awayOdd<}</td>
+</tr>
+</table>
+
+<!--
+<table class="table">
+<tr>
+<th>prediction</th> 
+</tr>
+    <tr ng-repeat="x in eventsList"  >
+    <td>
+<button ng-click="getPrediction(x)">Get</button>
+    {>prediction0z[x['_id']] | json<}</td>  
+    </tr>
+</table>
+
+-->
+</div>
+</div>
+
+</div>
+
+</body>
+
+<script src="./scraperJs.bundle.js"></script> 
+ 
+
+</html>
